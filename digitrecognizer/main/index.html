@@ -1,0 +1,36 @@
+<canvas
+          id="canvas"
+          width="280"
+          height="280"
+          style="border:2px solid; float: left; border-radius: 5px; cursor: crosshair;"
+        ></canvas>
+<p id="result" class="text-center text-success"></p>
+<a href="#" class="btn btn-success btn-block p-2"  id="predictButton">
+            Predict
+</a>
+<input
+        type="button"
+        class="btn btn-block btn-secondary p-2"
+        id="clearButton"
+        value="Clear"
+ />
+
+ <script type="text/javascript">
+    $("#predictButton").click(function() {
+      var $SCRIPT_ROOT = "/api/predict/";
+      var canvasObj = document.getElementById("canvas");
+      var context = canvas.getContext( "2d" );
+      var img = canvasObj.toDataURL();
+      $.ajax({
+        type: "POST",
+        url: $SCRIPT_ROOT,
+        data: { img: img },
+        success: function(data) {
+          $("#result").text("Predicted Output is: " + data.output);
+context.clearRect( 0, 0, 280, 280 );
+          context.fillStyle="white";
+          context.fillRect(0,0,canvas.width,canvas.height);
+}
+      });
+    });
+  </script>
